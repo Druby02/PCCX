@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.utils import timezone
 
 from PL.models import Product, Category
+
+from .forms import SignupForm
+
 # Create your views here.
 def index(request):
     products = Product.objects.filter(expires_at__gt=timezone.now())[0:6] 
@@ -15,3 +18,10 @@ def index(request):
 
 def contact(request):
     return render(request, 'core/contact.html')
+
+def signup(request):
+    form = SignupForm()
+
+    return render(request, "core/signup.html", {
+        "form": form
+    })
