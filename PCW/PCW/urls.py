@@ -23,6 +23,6 @@ from PC.views import contact, index
 
 urlpatterns = [
     path('', index, name='index'),
-    path('contact/', contact, name='contact'),  
+#   path("items/", include("item.urls")),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
