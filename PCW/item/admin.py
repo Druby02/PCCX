@@ -6,6 +6,7 @@ from .models import Category, Item
 
 #stupid
 
+#tripple
 
 admin.site.register(Category)
 admin.site.register(Item)
