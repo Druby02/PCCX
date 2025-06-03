@@ -1,11 +1,11 @@
 {% extends 'core/base.html' %}
 
-{% block title %} {{ product.title }}{% endblock %}
+{% block title %} {{ item.title }}{% endblock %}
 
 {% block content %}
 <div class= "grid grid-cols-5 gap-6">
     <div class="col-span-3">
-        <img src="{{ product.image.url }}" class="w-full h-96 object-cover rounded-xl">
+        <img src="{{ item.image.url }}" class="w-full h-96 object-cover rounded-xl">
     </div>
 </div
 

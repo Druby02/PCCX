@@ -1,17 +1,17 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
-from PL.models import Product, Category
+from item.models import Item, Category
 
 from .forms import SignupForm
 
 # Create your views here.
 def index(request):
-    products = Product.objects.filter(expires_at__gt=timezone.now())[0:6] 
+    items = Item.objects.filter(expires_at__gt=timezone.now())[0:6] 
     categories = Category.objects.all()
 
     return render(request, 'core/index.html',{
-        'products': products,
+        'items': items,
         'categories': categories,
     })
 
