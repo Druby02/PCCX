@@ -1,0 +1,7 @@
+#requirements.txt
+#python
+#Django
+#pillow
+#pycountry
+#forex-python I FUCKING HATE YOU SO MUCH YOURE GETTING UNINSTALLED
+#currencyconverter
