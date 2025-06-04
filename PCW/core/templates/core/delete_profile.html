@@ -1,0 +1,15 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Delete Profile{% endblock %}
+
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto; text-align: center;">
+    <h2>Delete Profile</h2>
+    <p>Are you sure you want to delete your profile? This action cannot be undone.</p>
+    <form method="post" class="mt-6">
+        {% csrf_token %}
+        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-800">Yes, delete my profile</button>
+        <a href="{% url 'core:profile' %}" class="ml-4 px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-600">Cancel</a>
+    </form>
+</div>
+{% endblock %}

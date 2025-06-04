@@ -1,0 +1,14 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto; text-align: center;">
+    <h2>Edit Profile</h2>
+    <form method="post" class="mt-6" style="display: inline-block; text-align: left;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 mt-4 w-full">Save Changes</button>
+    </form>
+</div>
+{% endblock %}
