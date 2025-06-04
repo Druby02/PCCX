@@ -9,11 +9,10 @@
         <ul>
             {% for entry in cart_items %}
                 <li class="mb-4 flex justify-between items-center">
-                    <span>
-                        {{ entry.item.name }}
-                        <span class="text-gray-500 text-sm block">
-                            Seller: {{ entry.item.created_by.username }}
-                        </span>
+                    <span class="flex items-center gap-4">
+                        <span class="font-semibold">{{ entry.item.name }}</span>
+                        <span class="text-gray-700 text-sm">Price: {{ entry.item.price }}</span>
+                        <span class="text-gray-500 text-sm">Seller: {{ entry.item.created_by.username }}</span>
                     </span>
                     <form action="{% url 'item:update_cart_quantity' entry.item.id %}" method="post" class="flex items-center">
                         {% csrf_token %}
