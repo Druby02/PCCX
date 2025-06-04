@@ -17,7 +17,7 @@ urlpatterns = [
     path('terms/', views.terms, name='terms'),
     path('signup/', views.signup, name='signup'),
     path('login/', auth_views.LoginView.as_view(template_name='core/login.html', authentication_form=LoginForm), name='login'),
-    path("set_currency/", views.set_currency, name="set_currency")
+    path("set_currency/", views.set_currency, name="set_currency"),
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
     path('logout/', LogoutView.as_view(next_page='core:index'), name='logout'),

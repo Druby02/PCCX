@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_40
+from django.shortcuts import render, redirect, get_object_or_404
 
 from item.models import Category, Item
 
