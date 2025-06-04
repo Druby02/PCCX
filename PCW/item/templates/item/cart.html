@@ -9,7 +9,12 @@
         <ul>
             {% for entry in cart_items %}
                 <li class="mb-4 flex justify-between items-center">
-                    <span>{{ entry.item.name }}</span>
+                    <span>
+                        {{ entry.item.name }}
+                        <span class="text-gray-500 text-sm block">
+                            Seller: {{ entry.item.created_by.username }}
+                        </span>
+                    </span>
                     <form action="{% url 'item:update_cart_quantity' entry.item.id %}" method="post" class="flex items-center">
                         {% csrf_token %}
                         <input type="number" name="quantity" value="{{ entry.quantity }}" min="1" class="w-16 text-center border rounded mx-2">
@@ -19,9 +24,17 @@
                 </li>
             {% endfor %}
         </ul>
+        <button onclick="window.print()" class="mt-4 px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400">
+            Print Cart
+        </button>
     {% else %}
         <p>Your cart is empty.</p>
     {% endif %}
-
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    var cart = {{ cart|json_script:"cart-data" }};
+</script>
 {% endblock %}

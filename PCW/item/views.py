@@ -114,23 +114,16 @@ def add_to_cart(request, item_id):
         cart_item.save()
     return redirect('item:cart')
 
+@login_required
 def remove_from_cart(request, item_id):
-    cart = request.session.get('cart', {})
-    item_id_str = str(item_id)
-    if item_id_str in cart:
-        del cart[item_id_str]
-    request.session['cart'] = cart
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_item = get_object_or_404(CartItem, cart=cart, item_id=item_id)
+    cart_item.delete()
     return redirect('item:cart')
 
 def cart(request):
-    cart = request.session.get('cart', {})
-    items = Item.objects.filter(id__in=cart.keys())
-    cart_items = []
-    for item in items:
-        cart_items.append({
-            'item': item,
-            'quantity': cart[str(item.id)]
-        })
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_items = cart.items.select_related('item').all()
     return render(request, 'item/cart.html', {'cart_items': cart_items})
 
 def update_cart_quantity(request, item_id):
