@@ -4,6 +4,9 @@ from item.models import Category, Item
 
 from .forms import SignupForm
 
+from .forms import CurrencyForm
+
+
 def index(request):
     items = Item.objects.filter(is_sold=False)[0:6]
     categories = Category.objects.all()
@@ -39,3 +42,15 @@ def privacy(request):
 
 def terms(request):
     return render(request, 'core/terms.html')
+
+def set_currency(request):
+    if request.method == "POST":
+        form = CurrencyForm(request.POST)
+
+        if form.is_valid():
+            request.session["currency"] = form.cleaned_data["currency"]
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+
+    return redirect("/")
+
+

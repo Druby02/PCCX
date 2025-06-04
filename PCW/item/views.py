@@ -17,19 +17,33 @@ def items(request):
     if query:
         items = items.filter(Q(name__icontains=query) | Q(description__icontains=query))
 
+    target_currency = request.session.get("currency", "NOK")
+
+    for item in items:
+        print("Converting item:", item.name)
+        item.converted_price = price_converter(item.price, target_currency)
+
     return render(request, 'item/items.html', {
         'items': items,
         'query': query,
         'categories': categories,
-        'category_id': int(category_id)
+        'category_id': int(category_id),
+        "currency": target_currency
     })
+
+from item.currency_utils import price_converter
 
 def detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
+    target_currency = request.session.get("currency", "NOK")
+    converted_price = price_converter(item.price, target_currency)
+
     related_items = Item.objects.filter(category=item.category, is_sold=False).exclude(pk=pk)[0:3]
 
     return render(request, 'item/detail.html', {
         'item': item,
+        "converted_price": converted_price,
+        "currency": target_currency,
         'related_items': related_items
     })
 
@@ -40,6 +54,7 @@ def new(request):
 
         if form.is_valid():
             item = form.save(commit=False)
+            item.currency_type = "NOK"
             item.created_by = request.user
             item.save()
 
@@ -77,3 +92,4 @@ def delete(request, pk):
     item.delete()
 
     return redirect('dashboard:index')
+

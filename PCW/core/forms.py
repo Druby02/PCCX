@@ -33,3 +33,11 @@ class SignupForm(UserCreationForm):
         'placeholder': 'Repeat password',
         'class': 'w-full py-4 px-6 rounded-xl'
     }))
+
+
+from django.conf import settings
+
+class CurrencyForm(forms.Form):
+    currency = forms.ChoiceField(choices=settings.CURRENCY_TYPES, initial="NOK")
+
+    
