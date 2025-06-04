@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .forms import NewItemForm, EditItemForm
-from .models import Category, Item
+from .models import Category, Item, Cart, CartItem
 
 def items(request):
     query = request.GET.get('query', '')
@@ -94,7 +94,6 @@ def delete(request, pk):
     return redirect('dashboard:index')
 
 
-
 def items_by_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     items = Item.objects.filter(category=category, is_sold=False)
@@ -105,11 +104,14 @@ def items_by_category(request, category_id):
         'category': category,
         'categories': categories
     })
+@login_required
 def add_to_cart(request, item_id):
-    cart = request.session.get('cart', {})
-    item_id_str = str(item_id)
-    cart[item_id_str] = cart.get(item_id_str, 0) + 1
-    request.session['cart'] = cart
+    item = get_object_or_404(Item, id=item_id)
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item)
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
     return redirect('item:cart')
 
 def remove_from_cart(request, item_id):

@@ -15,12 +15,13 @@
                         <input type="number" name="quantity" value="{{ entry.quantity }}" min="1" class="w-16 text-center border rounded mx-2">
                         <button type="submit" class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">Update</button>
                     </form>
-                    <a href="{% url 'item:remove_from_cart' entry.item.id %}" class="text-red-500 hover:underline ml-4">Remove</a>
+                    <a href="{% url 'item:remove_from_cart' entry.item.id %}" class="bg-gray-200 px-3 py-1 rounded text-red-500 hover:bg-gray-300 hover:underline ml-4">Remove</a>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
         <p>Your cart is empty.</p>
     {% endif %}
+
 </div>
 {% endblock %}
