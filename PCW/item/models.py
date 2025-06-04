@@ -10,12 +10,19 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
+    
+
+Units = [("PU", "Per Unit"),("kg", "kilogram"), ("g", "gram"), ("lb", "pound"), ("oz", "ounce"),
+         ("L", "Liter"), ("ml", "milliliter"), ("gal", "gallon"), ("qt", "quart"), ("pt", "pint"),
+         ("m", "meter"), ("cm", "centimeter"), ("mm", "millimeter"), ("ft", "feet"), ("in", "inch")]
 
 class Item(models.Model):
     category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     price = models.FloatField()
+    unit_type= models.CharField(choices=Units, max_length=20, default="PU")
+    unit_amount= models.FloatField(default=1)
     image = models.ImageField(upload_to='item_images', blank=True, null=True)
     is_sold = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, related_name='items', on_delete=models.CASCADE)
