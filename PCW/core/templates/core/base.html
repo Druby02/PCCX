@@ -37,17 +37,17 @@
             <div class="w-2/3 pr-10">
                 <h3 class="mb-5 font-semibold text-gray-400">About</h3>
 
-                <p class="text-lg text-gray-500">Lorem ipsum bla bla bla. Lorem ipsum bla bla bla. Lorem ipsum bla bla bla.</p>
+                <p class="text-lg text-gray-500 text-center">Find the lowest grocery prices near you. We compare local stores so you can shop smarter, save money, and get more for your budget—every time you buy.</p>
             </div>
 
             <div class="w-1/3">
                 <h3 class="mb-5 font-semibold text-gray-400">Menu</h3>
 
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-lg text-teal-500 hover:text-teal-700">About</a></li>
+                    <li><a href="{% url 'core:about' %}" class="text-lg text-teal-500 hover:text-teal-700">About</a></li>
                     <li><a href="{% url 'core:contact' %}" class="text-lg text-teal-500 hover:text-teal-700">Contact</a></li>
-                    <li><a href="#" class="text-lg text-teal-500 hover:text-teal-700">Privacy policy</a></li>
-                    <li><a href="#" class="text-lg text-teal-500 hover:text-teal-700">Term of use</a></li>
+                    <li><a href="{% url 'core:privacy' %}" class="text-lg text-teal-500 hover:text-teal-700">Privacy policy</a></li>
+                    <li><a href="{% url 'core:terms' %}" class="text-lg text-teal-500 hover:text-teal-700">Term of use</a></li>
                 </ul>
             </div>
         </footer>

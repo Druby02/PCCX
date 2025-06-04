@@ -30,3 +30,12 @@ def signup(request):
     return render(request, 'core/signup.html', {
         'form': form
     })
+
+def about(request):
+    return render(request, 'core/about.html')
+
+def privacy(request):
+    return render(request, 'core/privacy.html')
+
+def terms(request):
+    return render(request, 'core/terms.html')
