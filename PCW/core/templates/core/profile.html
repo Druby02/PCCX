@@ -4,6 +4,18 @@
 
 {% block content %}
 <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+    <h2 style="font-size: 2em; font-weight: bold; margin-bottom: 1em;">Profile</h2>
+    <p>Welcome to your profile page! Here you can view and manage your account details.</p>
+
+    {% if messages %}
+        <div class="mt-4">
+            {% for message in messages %}
+                <div class="bg-green-100 text-green-800 p-4 rounded mb-2">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <h2>Your Profile</h2>
     <p><strong>Username:</strong> {{ user.username }}</p>
     <p><strong>Email:</strong> {{ user.email }}</p>

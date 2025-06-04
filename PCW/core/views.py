@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_40
 
 from item.models import Category, Item
 
@@ -72,4 +72,5 @@ def delete_profile(request):
         user.delete()
         return redirect('core:index')
     return render(request, 'core/delete_profile.html')
+
 

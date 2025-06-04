@@ -77,3 +77,51 @@ def delete(request, pk):
     item.delete()
 
     return redirect('dashboard:index')
+
+def items_by_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    items = Item.objects.filter(category=category, is_sold=False)
+    categories = Category.objects.all()
+
+    return render(request, 'item/items_by_category.html', {
+        'items': items,
+        'category': category,
+        'categories': categories
+    })
+def add_to_cart(request, item_id):
+    cart = request.session.get('cart', {})
+    item_id_str = str(item_id)
+    cart[item_id_str] = cart.get(item_id_str, 0) + 1
+    request.session['cart'] = cart
+    return redirect('item:cart')
+
+def remove_from_cart(request, item_id):
+    cart = request.session.get('cart', {})
+    item_id_str = str(item_id)
+    if item_id_str in cart:
+        del cart[item_id_str]
+    request.session['cart'] = cart
+    return redirect('item:cart')
+
+def cart(request):
+    cart = request.session.get('cart', {})
+    items = Item.objects.filter(id__in=cart.keys())
+    cart_items = []
+    for item in items:
+        cart_items.append({
+            'item': item,
+            'quantity': cart[str(item.id)]
+        })
+    return render(request, 'item/cart.html', {'cart_items': cart_items})
+
+def update_cart_quantity(request, item_id):
+    if request.method == 'POST':
+        quantity = int(request.POST.get('quantity', 1))
+        cart = request.session.get('cart', {})
+        item_id_str = str(item_id)
+        if quantity > 0:
+            cart[item_id_str] = quantity
+        elif item_id_str in cart:
+            del cart[item_id_str]
+        request.session['cart'] = cart
+    return redirect('item:cart')
