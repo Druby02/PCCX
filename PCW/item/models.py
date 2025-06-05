@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
+from django.db.models import Min
 
 
 class Category(models.Model):
@@ -23,7 +24,7 @@ class Item(models.Model):
     category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    price = models.FloatField()
+    base_price = models.FloatField()
     currency_type = models.CharField(max_length=3, default="NOK")
     unit_type= models.CharField(choices=Units, max_length=20, default="PU")
     unit_amount= models.FloatField(default=1)
@@ -34,6 +35,39 @@ class Item(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def price(self):
+        return self.base_price
+    
+    @property
+    def cheapest_price(self):
+        result = self.store_prices.aggregate(Min("price"))
+        return result["price__min"] if result["price__min"] is not None else None
+
+    @property
+    def cheapest_store(self):
+        cheapest = self.store_prices.order_by("price").first()
+        return cheapest.store.name if cheapest else "N/A"
+
+
+
+class Store(models.Model):
+    name = models.CharField(max_length= 100)
+
+    def __str__(self):
+        return self.name
+
+class StorePrice(models.Model):
+    item = models.ForeignKey(Item, related_name="store_prices", on_delete=models.CASCADE)
+    store = models.ForeignKey(Store, related_name="store_prices", on_delete=models.CASCADE)
+    price = models.FloatField()
+    currency = models.CharField(max_length=3, default="NOK")
+
+    class Meta:
+        unique_together = ("item", "store")
+
+    def __str__(self):
+        return f"{self.store.name} - {self.item.name} - {self.price}"
     
 
 class Cart(models.Model):

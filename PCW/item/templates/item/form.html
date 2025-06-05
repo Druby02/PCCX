@@ -10,6 +10,10 @@
 
     <div class="space-y-4">
         {{ form.as_p }}
+        {{formset.management_form}}
+        {%for subform in formset %}
+            {{subform.as_p}}
+        {% endfor %}
     </div>
 
     {% if form.errors or form.non_field_errors %}
@@ -20,6 +24,11 @@
 
             {{ form.non_field_errors }}
         </div>
+    {% endif %}
+    {% if formset.non_form_errors %}
+        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+            {{ formset.non_form_errors }}
+    </div>
     {% endif %}
 
     <button class="mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Submit</button>

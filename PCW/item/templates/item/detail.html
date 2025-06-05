@@ -10,8 +10,13 @@
 
     <div class="col-span-2 p-6 bg-gray-100 rounded-xl">
         <h1 class="mb-6 text-3xl">{{ item.name }}</h1>
-        <p class="text-gray-500"><strong>Price: </strong>{{ item.price }}</p>
-        <p class="text-gray-500"><strong>Price: </strong>{{ converted_price }} {{ currency }}</p>
+        <p class="text-gray-500"><strong>Base price: </strong>{{ item.price }}</p>
+        {% if item.cheapest_price %}
+        <p class="text-gray-500">Cheapest store price: {{ item.cheapest_price }} at {{ item.cheapest_store }}</p>
+        {% else %}
+        <p class="text-gray-500"><strong>No store prices available.</strong></p>
+        {% endif %}
+        <p class="text-gray-500"><strong>Converted base price: </strong>{{ converted_price }} {{ currency }}</p>
         <p class="text-gray-500"><strong>Amount: </strong>{{ item.unit_amount }} {{ item.unit_type}}</p>
         <p class="text-gray-500"><strong>Seller: </strong>{{ item.created_by.username }}</p>
     
@@ -54,11 +59,16 @@
                     <div class="p-6 bg-white rounded-b-xl">
                         <h2 class="text-2xl">{{ item.name }}</h2>
                         <p class="text-gray-500">Price: {{ item.price }}</p>
+                        {% if item.cheapest_price %}
+                        <p class="text-gray-500">Cheapest store price: {{ item.cheapest_price }} at {{ item.cheapest_store }}</p>
+                        {%else%}
+                         <p class="text-gray-500">No store prices.</p>
+                         {%endif%}
                         <p class="text-gray-500">Amount: {{ item.unit_amount }} {{ item.unit_type}} </p>
                     </div>
                 </a>
             </div>
         {% endfor %}
     </div>
-</div>
+</div>%
 {% endblock %}

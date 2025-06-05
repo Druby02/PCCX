@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .forms import NewItemForm, EditItemForm
+from .forms import NewItemForm, EditItemForm, StorePriceFormSet
 from .models import Category, Item, Cart, CartItem
 from currency_converter import CurrencyConverter
 
@@ -22,7 +22,7 @@ def items(request):
 
     for item in items:
         print("Converting item:", item.name)
-        item.converted_price = price_converter(item.price, target_currency)
+        item.converted_price = price_converter(item.base_price, target_currency)
 
     return render(request, 'item/items.html', {
         'items': items,
@@ -37,7 +37,7 @@ from item.currency_utils import price_converter
 def detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
     target_currency = request.session.get("currency", "NOK")
-    converted_price = price_converter(item.price, target_currency)
+    converted_price = price_converter(item.base_price, target_currency)
 
     related_items = Item.objects.filter(category=item.category, is_sold=False).exclude(pk=pk)[0:3]
 
@@ -52,19 +52,24 @@ def detail(request, pk):
 def new(request):
     if request.method == 'POST':
         form = NewItemForm(request.POST, request.FILES)
+        formset = StorePriceFormSet(request.POST)
 
-        if form.is_valid():
+        if form.is_valid() and formset.is_valid():
             item = form.save(commit=False)
             item.currency_type = "NOK"
             item.created_by = request.user
             item.save()
+            formset.instance = item
+            formset.save()
 
             return redirect('item:detail', pk=item.id)
     else:
         form = NewItemForm()
+        formset = StorePriceFormSet()
 
     return render(request, 'item/form.html', {
         'form': form,
+        "formset": formset,
         'title': 'New item',
     })
 
@@ -74,16 +79,20 @@ def edit(request, pk):
 
     if request.method == 'POST':
         form = EditItemForm(request.POST, request.FILES, instance=item)
+        formset = StorePriceFormSet(request.POST, instance=item)
 
         if form.is_valid():
             form.save()
+            formset.save()
 
             return redirect('item:detail', pk=item.id)
     else:
         form = EditItemForm(instance=item)
+        formset = StorePriceFormSet(instance=item)
 
     return render(request, 'item/form.html', {
         'form': form,
+        "formset": formset,
         'title': 'Edit item',
     })
 
@@ -125,7 +134,7 @@ def remove_from_cart(request, item_id):
 def cart(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
     cart_items = cart.items.select_related('item').all()
-    cart_total = sum(entry.item.price * entry.quantity for entry in cart_items)
+    cart_total = sum(entry.item.base_price * entry.quantity for entry in cart_items)
 
     currency = request.session.get("currency", "NOK")
     
