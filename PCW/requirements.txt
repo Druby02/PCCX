@@ -1,8 +1,7 @@
 #requirements.txt
-#python
-#Django
-#pillow
-#pycountry
+#python 3.13.3
+#Django 5.2.1
+#pillow 11.2.1
+#pycountry 21.6.1
 #forex-python I FUCKING HATE YOU SO MUCH YOURE GETTING UNINSTALLED
-#currencyconverter
-#git?
+#currencyconverter 0.18.6
