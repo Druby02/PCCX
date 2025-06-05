@@ -153,15 +153,18 @@ def cart(request):
         'currency': currency,
     })
 
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def update_cart_quantity(request, item_id):
     if request.method == 'POST':
         quantity = int(request.POST.get('quantity', 1))
-        cart = request.session.get('cart', {})
-        item_id_str = str(item_id)
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        cart_item = get_object_or_404(CartItem, cart=cart, item_id=item_id)
         if quantity > 0:
-            cart[item_id_str] = quantity
-        elif item_id_str in cart:
-            del cart[item_id_str]
-        request.session['cart'] = cart
+            cart_item.quantity = quantity
+            cart_item.save()
+        else:
+            cart_item.delete()
     return redirect('item:cart')
 
