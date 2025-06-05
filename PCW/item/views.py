@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from .forms import NewItemForm, EditItemForm
 from .models import Category, Item, Cart, CartItem
+from currency_converter import CurrencyConverter
 
 def items(request):
     query = request.GET.get('query', '')
@@ -124,7 +125,24 @@ def remove_from_cart(request, item_id):
 def cart(request):
     cart, created = Cart.objects.get_or_create(user=request.user)
     cart_items = cart.items.select_related('item').all()
-    return render(request, 'item/cart.html', {'cart_items': cart_items})
+    cart_total = sum(entry.item.price * entry.quantity for entry in cart_items)
+
+    currency = request.session.get("currency", "NOK")
+    
+    converted_total = cart_total
+    if currency != "NOK":
+        c = CurrencyConverter()
+        try:
+            converted_total = c.convert(cart_total, 'NOK', currency)
+        except Exception:
+            converted_total = cart_total 
+
+    return render(request, 'item/cart.html', {
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+        'converted_total': converted_total,
+        'currency': currency,
+    })
 
 def update_cart_quantity(request, item_id):
     if request.method == 'POST':
@@ -137,3 +155,4 @@ def update_cart_quantity(request, item_id):
             del cart[item_id_str]
         request.session['cart'] = cart
     return redirect('item:cart')
+
