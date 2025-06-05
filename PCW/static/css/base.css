@@ -1,0 +1,114 @@
+/* static/css/base.css */
+/* Deep Citrus Theme (Dark Orange Base, No Black) */
+
+:root {
+  --citrus-bg: #4b2e1e;          /* deep solid burnt orange */
+  --citrus-surface: #7a4c2b;     /* medium warm surface tone */
+  --citrus-orange: #ff9c5b;      /* vibrant highlight */
+  --citrus-accent: #ffb26b;      /* softer peachy accent */
+  --citrus-muted: #f6e9d7;       /* light beige for text */
+  --citrus-border: #d88c4c;
+  --citrus-danger: #dc2626;
+  --citrus-shadow: rgba(255, 156, 91, 0.15);
+}
+
+body {
+  background-color: var(--citrus-bg);
+  color: var(--citrus-muted);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+}
+
+h1, h2, h3 {
+  color: var(--citrus-orange);
+}
+
+a {
+  color: var(--citrus-accent);
+  text-decoration: none;
+}
+a:hover {
+  color: white;
+}
+
+/* Buttons */
+button, .btn {
+  background-color: var(--citrus-orange);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 3px 5px var(--citrus-shadow);
+}
+button:hover, .btn:hover {
+  background-color: var(--citrus-accent);
+}
+
+
+
+/* Forms & Inputs */
+input, textarea, select {
+  appearance: none;
+  background-color: var(--citrus-surface);
+  color: var(--citrus-muted);
+  border: 2px solid var(--citrus-border);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  width: 100%;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0L5 6L10 0H0Z' fill='%23f6e9d7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--citrus-orange);
+  box-shadow: 0 0 0 3px var(--citrus-shadow);
+}
+
+/* Cards / Surfaces */
+.card, .panel, .rounded-xl, .bg-white, .bg-gray-100 {
+  background-color: var(--citrus-surface) !important;
+  color: var(--citrus-muted);
+  border: 1px solid var(--citrus-border);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 4px 6px var(--citrus-shadow);
+}
+
+/* Zones */
+.orange-zone {
+  background-color: var(--citrus-orange) !important;
+  color: white !important;
+}
+.lime-zone {
+  background-color: #9ecb94 !important;
+  color: #2a3a26 !important;
+}
+
+/* Alerts */
+.alert-error {
+  background-color: var(--citrus-danger);
+  color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Tailwind-style overrides */
+.bg-white,
+.bg-gray-100,
+.bg-gray-200,
+.bg-gray-300 {
+  background-color: var(--citrus-surface) !important;
+}
+
+.text-gray-500,
+.text-gray-700 {
+  color: var(--citrus-muted) !important;
+}
