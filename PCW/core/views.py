@@ -8,6 +8,8 @@ from .forms import CurrencyForm
 
 
 from .forms import EditProfileForm
+from django.contrib import messages
+
 
 
 def index(request):

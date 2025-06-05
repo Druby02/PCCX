@@ -5,6 +5,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import NewItemForm, EditItemForm, StorePriceFormSet
 from .models import Category, Item, Cart, CartItem
 from currency_converter import CurrencyConverter
+from django.contrib import messages
+
 
 def items(request):
     query = request.GET.get('query', '')
@@ -62,6 +64,7 @@ def new(request):
             formset.instance = item
             formset.save()
 
+            messages.success(request, "Item successfully created.")
             return redirect('item:detail', pk=item.id)
     else:
         form = NewItemForm()
@@ -85,6 +88,7 @@ def edit(request, pk):
             form.save()
             formset.save()
 
+            messages.success(request, "Item successfully updated.")
             return redirect('item:detail', pk=item.id)
     else:
         form = EditItemForm(instance=item)
@@ -101,6 +105,7 @@ def delete(request, pk):
     item = get_object_or_404(Item, pk=pk, created_by=request.user)
     item.delete()
 
+    messages.success(request, "Item deleted.")
     return redirect('dashboard:index')
 
 
@@ -122,6 +127,7 @@ def add_to_cart(request, item_id):
     if not created:
         cart_item.quantity += 1
         cart_item.save()
+    messages.success(request, "Item added to cart.")
     return redirect('item:cart')
 
 @login_required
@@ -129,6 +135,7 @@ def remove_from_cart(request, item_id):
     cart, created = Cart.objects.get_or_create(user=request.user)
     cart_item = get_object_or_404(CartItem, cart=cart, item_id=item_id)
     cart_item.delete()
+    messages.success(request, "Item removed from cart.")
     return redirect('item:cart')
 
 def cart(request):

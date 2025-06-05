@@ -5,6 +5,8 @@ from item.models import Item
 
 from .forms import ConversationMessageForm
 from .models import Conversation
+from django.contrib import messages
+
 
 @login_required
 def new_conversation(request, item_pk):
